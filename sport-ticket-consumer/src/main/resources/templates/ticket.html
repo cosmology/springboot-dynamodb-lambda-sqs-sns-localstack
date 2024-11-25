@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sport-Consumer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.css">
+</head>
+
+<body>
+
+<main>
+    <header>
+        <nav>
+            <div class="ui stackable large menu">
+                <a th:href="@{/}" class="header item">Sport-Consumer</a>
+                <div class="right menu">
+                    <a class="connWebSocket ui item"><i class="circle green icon"></i>WebSocket</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="ui container">
+        <div class="ui teal segment" style="margin-top:10px">
+            <div id="ticketList" class="ui unstackable divided items">
+                <div class="item" th:id="${ticket.id}" th:each="ticket : ${ticketList}">
+                    <div class="content">
+                        <div class="meta">
+                            <span th:text="${#dates.format(ticket.publishedAt, 'dd-MMM-yyyy HH:mm:ss')}">Datetime</span>
+                            <span>Event Type:</span>
+                            <span th:text="${ticket.eventType}">Event Type:</span>
+                        </div>
+                        <div class="ui divider"></div>
+                        <div class="ui big header" th:text="${ticket.title}">Title</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alert Modal -->
+    <div class="ui tiny modal alert">
+        <div class="header"></div>
+        <div class="content"></div>
+        <div class="actions">
+            <div class="ui positive button">Ok</div>
+        </div>
+    </div>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.js"></script>
+<script src="/app.js"></script>
+
+</body>
+</html>

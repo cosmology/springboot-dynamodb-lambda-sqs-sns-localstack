@@ -1,0 +1,94 @@
+networks:
+  ls_network:
+    ipam:
+      config:
+        - subnet: 10.0.2.0/24
+
+services:
+  localstack:
+    container_name: "${LOCALSTACK_DOCKER_NAME:-localstack-main}"
+    image: localstack/localstack:latest
+    ports:
+      - "127.0.0.1:4510-4559:4510-4559"
+      - "127.0.0.1:4566:4566"
+    environment:
+      - AWS_DEFAULT_REGION=${AWS_REGION:-us-west-1}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - SERVICES=${SERVICES}
+      - DEBUG=${DEBUG:-0}
+    volumes:
+      - "$PWD/tmp/localstack:/var/lib/localstack"
+      - "$PWD/dynamodb-lambda-function/shared:/shared"
+      - "$PWD/dynamodb-lambda-function/src/test/resources/localstack/local-aws-infrastructure.sh:/etc/localstack/init/ready.d/init-aws.sh"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      ls_network:
+        ipv4_address: 10.0.2.20
+  
+  producer:
+    platform: linux/amd64
+    container_name: producer
+    build:
+      context: ./ticket-producer
+      dockerfile: Dockerfile
+    environment:
+      - AWS_REGION=${AWS_REGION}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    depends_on:
+      localstack:
+        condition: service_healthy
+    ports:
+      - 9080:9080
+    healthcheck:
+        test: "curl --fail --silent localhost:9080/actuator/health | jq --exit-status -n 'inputs | if has(\"status\") then .status==\"UP\" else false end' > /dev/null || exit 1"
+        interval: 5s
+        timeout: 5s
+        retries: 3
+        start_period: 5s
+    dns:
+      - 10.0.2.20
+    networks:
+      - ls_network
+  
+  sport-consumer:
+    platform: linux/amd64
+    container_name: sport-consumer
+    build:
+      context: ./sport-ticket-consumer
+      dockerfile: Dockerfile
+    environment:
+      - AWS_REGION=${AWS_REGION}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - TICKET_PRODUCER_URL=${TICKET_PRODUCER_URL}
+    depends_on:
+      producer:
+        condition: service_healthy
+    ports:
+      - 9081:9081
+    dns:
+      - 10.0.2.20
+    networks:
+      - ls_network
+  movie-consumer:
+    platform: linux/amd64
+    container_name: movie-consumer
+    build:
+      context: ./movie-ticket-consumer
+      dockerfile: Dockerfile
+    environment:
+      - AWS_REGION=${AWS_REGION}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - TICKET_PRODUCER_URL=${TICKET_PRODUCER_URL}
+    depends_on:
+      producer:
+        condition: service_healthy
+    ports:
+      - 9082:9082
+    dns:
+      - 10.0.2.20
+    networks:
+      - ls_network
