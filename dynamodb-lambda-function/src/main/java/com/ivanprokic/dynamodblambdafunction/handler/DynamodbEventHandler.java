@@ -20,6 +20,11 @@ public class DynamodbEventHandler implements Consumer<DynamodbEvent> {
 
     private final TicketEventPublisher ticketEventPublisher;
 
+    private static final String ATTRIBUTE_ID = "id";
+    private static final String ATTRIBUTE_EVENT_TYPE = "eventType";
+    private static final String ATTRIBUTE_TITLE = "title";
+    private static final String ATTRIBUTE_PUBLISHED_AT = "publishedAt";
+
     @Override
     public void accept(DynamodbEvent dynamodbEvent) {
         log.info("======================= DynamodbEventHandler dynamodbEvent " + dynamodbEvent);
@@ -37,10 +42,10 @@ public class DynamodbEventHandler implements Consumer<DynamodbEvent> {
         return new TicketEvent(
             ticket.getEventName(),
             new TicketEvent.Tickets(
-                image.get("id").getS(), 
-                image.get("eventType").getS(),
-                image.get("title").getS(), 
-                image.get("publishedAt").getS()
+                image.get(ATTRIBUTE_ID).getS(),
+                image.get(ATTRIBUTE_EVENT_TYPE).getS(),
+                image.get(ATTRIBUTE_TITLE).getS(),
+                image.get(ATTRIBUTE_PUBLISHED_AT).getS()
             )
         );
     }
