@@ -1,0 +1,2 @@
+pull_request_review:
+  require_code_owner_reviews: true
