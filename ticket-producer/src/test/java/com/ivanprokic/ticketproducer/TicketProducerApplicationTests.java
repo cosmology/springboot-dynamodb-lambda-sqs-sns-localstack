@@ -1,9 +1,8 @@
-package com.ivanfranchin.ticketproducer;
-import org.junit.jupiter.api.Disabled;
+package com.ivanprokic.ticketproducer;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@Disabled
 @SpringBootTest
 class TicketProducerApplicationTests {
 
