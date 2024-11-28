@@ -2,7 +2,6 @@ package com.ivanprokic.movieticketconsumer.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
@@ -17,12 +16,12 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @Service
-public class MovieServiceImpl implements MoiveService {
+public class MovieServiceImpl implements MovieService {
 
     MovieRepository movieRepository;
     
     @Override
-    public Movie creatMovie(Movie movie) {
+    public Movie createMovie(Movie movie) {
         return movieRepository.save(movie);
     }
 
@@ -34,7 +33,6 @@ public class MovieServiceImpl implements MoiveService {
         } else {
             throw new MovieNotFoundException(id);
         }
-        
     }
 
     @Override

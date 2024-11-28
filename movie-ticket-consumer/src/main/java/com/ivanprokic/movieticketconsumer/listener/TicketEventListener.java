@@ -32,7 +32,7 @@ public class TicketEventListener {
 
     @SqsListener("${aws.sqs.destination}")
     public void sqsListener(TicketEvent ticketEvent) {
-        log.info("10. TicketEventListener ****************** Received rawPayload: {}", ticketEvent);
+        log.info("TicketEventListener ****************** Received ticketEvent: {}", ticketEvent);
 
         // Send the raw payload to the WebSocket topic
         simpMessagingTemplate.convertAndSend("/topic/ticket", ticketEvent);

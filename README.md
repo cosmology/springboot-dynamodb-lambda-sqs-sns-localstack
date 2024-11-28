@@ -98,6 +98,13 @@ docker compose up --build
 | `sport-consumer` | UI      | http://localhost:9081                  |
 | `movie-consumer` | UI      | http://localhost:9082                  |
 
+## Preview in H2 Console
+
+| Application     | Type    | URL                                     |
+|-----------------|---------|-----------------------------------------|
+| `sport-consumer` | UI      | http://localhost:9081/h2-console               |
+| `movie-consumer` | UI      | http://localhost:9082/h2-console                  |
+
 ## Playing around
 
 - **Creating Events**
