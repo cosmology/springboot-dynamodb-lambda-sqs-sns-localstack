@@ -1,8 +1,3 @@
-FROM docker.elastic.co/beats/filebeat:7.17.25
-
-# Copy our custom configuration file
-COPY filebeat.yml /usr/share/filebeat/filebeat.yml
-
-USER root
-# Create a directory to map volume with all docker log files
-RUN mkdir /usr/share/filebeat/dockerlogs && chown -R root /usr/share/filebeat/ && chmod -R go-w /usr/share/filebeat/
+ARG  STACK_VERSION=8.16.1
+FROM docker.elastic.co/beats/filebeat:${STACK_VERSION}
+COPY --chown=root:filebeat filebeat.yml /usr/share/filebeat/filebeat.yml

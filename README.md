@@ -1,5 +1,5 @@
 
-# SNS to SQS Fan-out with FilterPolicy
+# Implementing SNS to SQS Fan-out with Filter Policies Using AWS LocalStack and ELK Stack
 
 This project demonstrates event message sent to SNS topic then "Fan-out" to multiple SQS Queues. It is fully decoupled approach with no data losss and ability to scale more SQS Queus over time. Built as Spring Boot multi module application, fully dockerized, running in LocalStack. 
 
@@ -48,12 +48,40 @@ Infrastructure build is done in the LocalStack [init ready hook](https://docs.lo
 4. Create .env with following entries. Note that LocalStack image accepts AWS_DEFAULT_REGION while Spring Cloud requires AWS_REGION
 
     ```
+    # LocalStack related 
     AWS_REGION=us-west-1
     AWS_ACCESS_KEY_ID=key
     AWS_SECRET_ACCESS_KEY=secret
     SERVICES=dynamodb,sns,sqs,lambda
     TICKET_PRODUCER_URL=http://producer:9080
     DEBUG=1
+
+    # ELK Stack related. Previously used 7.17.25, bumped to 8.16.1
+    STACK_VERSION=
+
+    # Password for the 'elastic' user (at least 6 characters)
+    ELASTIC_PASSWORD=
+
+    # Password for the 'kibana_system' user (at least 6 characters)
+    KIBANA_PASSWORD=
+
+    # Set the cluster name 'docker-cluster'
+    CLUSTER_NAME=
+
+    # Set to 'basic' or 'trial' to automatically start the 30-day trial
+    LICENSE=
+
+    # Port to expose Elasticsearch HTTP API to the host 9200
+    ES_PORT=
+
+    # Port to expose Kibana to the host 5601
+    KIBANA_PORT=
+
+    # Increase or decrease based on the available host memory (in bytes)
+    MEM_LIMIT=
+
+    # SAMPLE Predefined Key only to be used in POC environments
+    ENCRYPTION_KEY=
     ```
 
 
