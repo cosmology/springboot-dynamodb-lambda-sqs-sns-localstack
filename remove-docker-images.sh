@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+docker rmi aws-localstack-spring-boot-dynamodb-lambda-sqs-sns-filebeat:latest -f
 docker rmi aws-localstack-spring-boot-dynamodb-lambda-sqs-sns-sport-consumer:latest -f
 docker rmi aws-localstack-spring-boot-dynamodb-lambda-sqs-sns-movie-consumer:latest -f
 docker rmi aws-localstack-spring-boot-dynamodb-lambda-sqs-sns-producer:latest -f
