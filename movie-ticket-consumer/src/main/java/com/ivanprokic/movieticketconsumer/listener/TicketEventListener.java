@@ -32,7 +32,7 @@ public class TicketEventListener {
 
     @SqsListener("${aws.sqs.destination}")
     public void sqsListener(TicketEvent ticketEvent) {
-        log.info("TicketEventListener ****************** Received ticketEvent: {}", ticketEvent);
+        log.info("ticketEvent: {}" + ticketEvent);
 
         // Send the raw payload to the WebSocket topic
         simpMessagingTemplate.convertAndSend("/topic/ticket", ticketEvent);
@@ -49,7 +49,5 @@ public class TicketEventListener {
 
         // Save to the repository
         movieRepository.save(movie);
-
-        log.info("TicketEventListener ****************** Saved movie entity: {}", movie);
     }
 }

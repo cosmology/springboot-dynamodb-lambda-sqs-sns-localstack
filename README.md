@@ -101,37 +101,51 @@ docker compose up --build
 
 ## Maven
 
-- **ticket-producer**
+1. **run infrastucture in docker compose**
 
-  In a terminal and, inside `aws-localstack-spring-boot-dynamodb-lambda-sqs-sns` root folder, run the following command
+    Comment out all the services along with volumes except "localstack" and run
+  
+  ```
+  docker compose up --build
+  ```
+2. **run ticket-producer service**
+
+    In a new terminal and, inside `aws-localstack-spring-boot-dynamodb-lambda-sqs-sns` root folder, run the following command
   ```
   export AWS_REGION=eu-west-1 && export AWS_ACCESS_KEY_ID=key && export AWS_SECRET_ACCESS_KEY=secret && \
   ./mvnw clean spring-boot:run --projects ticket-producer
   ```
 
-- **ticket-consumer**
+- **run sport-ticket-consumer**
 
-  In another terminal and, inside `spring-boot-lambda-demo` root folder, run the command below
+  In another terminal and, inside `aws-localstack-spring-boot-dynamodb-lambda-sqs-sns` root folder, run the command below
   ```
-  export AWS_REGION=eu-west-1 && export AWS_ACCESS_KEY_ID=key && export AWS_SECRET_ACCESS_KEY=secret && \
-    -e TICKET_PRODUCER_URL=http://ticket-producer:9080 \
-    ./mvnw clean spring-boot:run --projects ticket-consumer
+  export AWS_REGION=eu-west-1 && export AWS_ACCESS_KEY_ID=key && export AWS_SECRET_ACCESS_KEY=secret && TICKET_PRODUCER_URL=http://localhost:9080 && \
+  ./mvnw clean spring-boot:run --projects sport-ticket-consumer
     ```
+
+- **run movie-ticket-consumer**
+
+In another terminal and, inside `aws-localstack-spring-boot-dynamodb-lambda-sqs-sns` root folder, run the command below
+```
+export AWS_REGION=eu-west-1 && export AWS_ACCESS_KEY_ID=key && export AWS_SECRET_ACCESS_KEY=secret && TICKET_PRODUCER_URL=http://ticket-producer:9080 \
+  ./mvnw clean spring-boot:run --projects movie-ticket-consumer
+  ```
 
 ## Preview in Browser
 
 | Application     | Type    | URL                                     |
 |-----------------|---------|-----------------------------------------|
 | `ticket-producer` | Swagger | http://localhost:9080/swagger-ui.html |
-| `sport-consumer` | UI      | http://localhost:9081                  |
-| `movie-consumer` | UI      | http://localhost:9082                  |
+| `sport-ticket-consumer` | UI      | http://localhost:9081                  |
+| `movie-ticket-consumer` | UI      | http://localhost:9082                  |
 
 ## Preview in H2 Console
 
 | Application     | Type    | URL                                     |
 |-----------------|---------|-----------------------------------------|
-| `sport-consumer` | UI      | http://localhost:9081/h2-console               |
-| `movie-consumer` | UI      | http://localhost:9082/h2-console                  |
+| `sport-ticket-consumer` | UI      | http://localhost:9081/h2-console               |
+| `movie-ticket-consumer` | UI      | http://localhost:9082/h2-console                  |
 
 ## Playing around
 
