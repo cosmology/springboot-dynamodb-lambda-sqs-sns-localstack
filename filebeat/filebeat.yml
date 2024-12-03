@@ -8,7 +8,7 @@ filebeat.inputs:
 
   processors:
     - decode_json_fields:
-        fields: ["log","message"]
+        fields: ["message"]
         target: ""
         # overwrite existing target elasticsearch fields while decoding json fields
         overwrite_keys: true

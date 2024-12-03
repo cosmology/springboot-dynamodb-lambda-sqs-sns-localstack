@@ -14,19 +14,21 @@
     <version>1.0.0</version>
     <packaging>pom</packaging>
 
-    <properties>
-        <java.version>21</java.version>
-        <amazon-awssdk.version>2.29.3</amazon-awssdk.version>
-        <spring-cloud-aws.version>3.2.1</spring-cloud-aws.version>
-        <testcontainers.version>1.19.3</testcontainers.version>
-    </properties>
-
     <modules>
         <module>dynamodb-lambda-function</module>
         <module>ticket-producer</module>
         <module>sport-ticket-consumer</module>
         <module>movie-ticket-consumer</module>
     </modules>
+
+    <properties>
+        <java.version>21</java.version>
+        <amazon-awssdk.version>2.29.3</amazon-awssdk.version>
+        <spring-cloud-aws.version>3.2.1</spring-cloud-aws.version>
+        <testcontainers.version>1.19.3</testcontainers.version>
+        <logstash-logback-encoder.version>8.0</logstash-logback-encoder.version>
+        <springdoc-openapi.version>2.6.0</springdoc-openapi.version>
+    </properties>
 
     <dependencyManagement>
         <dependencies>

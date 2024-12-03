@@ -14,7 +14,6 @@
     <description>Demo project for Spring Boot</description>
 
     <properties>
-        <springdoc-openapi.version>2.6.0</springdoc-openapi.version>
         <module.image.name>${project.name}</module.image.name>
     </properties>
 
@@ -38,6 +37,13 @@
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-tracing-bridge-brave</artifactId>
+        </dependency>
+
+        <!-- Logstash-Logback Encoder -->
+        <dependency>
+            <groupId>net.logstash.logback</groupId>
+            <artifactId>logstash-logback-encoder</artifactId>
+            <version>${logstash-logback-encoder.version}</version>
         </dependency>
 
         <!-- SpringDoc OpenApi -->

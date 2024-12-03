@@ -27,7 +27,6 @@ public class DynamodbEventHandler implements Consumer<DynamodbEvent> {
 
     @Override
     public void accept(DynamodbEvent dynamodbEvent) {
-        log.info("======================= DynamodbEventHandler dynamodbEvent " + dynamodbEvent);
         dynamodbEvent.getRecords()
             .stream()
             .map(this::toTicketEvent)
@@ -36,7 +35,6 @@ public class DynamodbEventHandler implements Consumer<DynamodbEvent> {
 
     private TicketEvent toTicketEvent(DynamodbEvent.DynamodbStreamRecord ticket) {
 
-        log.info("======================= DynamodbEventHandler ticket " + ticket);
         Map<String, AttributeValue> image = ticket.getDynamodb().getNewImage();
 
         return new TicketEvent(
