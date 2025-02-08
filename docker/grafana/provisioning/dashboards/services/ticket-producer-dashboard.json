@@ -31,7 +31,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "description": "",
         "fieldConfig": {
@@ -83,7 +83,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "exemplar": true,
             "expr": "sum(increase(http_server_requests_seconds_count{job=\"ticket-producer\",method=~\".+\",status=~\"2.+\",uri=~\"/api/ticket.*\"}[1m]))",
@@ -96,7 +96,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "exemplar": true,
             "expr": "sum(increase(http_server_requests_seconds_count{job=\"ticket-producer\",method=~\".+\",status!~\"2.+\",uri=~\"/api/ticket.*\"}[1m]))",
@@ -113,7 +113,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "fieldConfig": {
           "defaults": {
@@ -173,7 +173,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "description": "",
         "fieldConfig": {
@@ -255,7 +255,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "exemplar": true,
             "expr": "sum(increase(http_server_requests_seconds_count{job=\"ticket-producer\",method=\"GET\",status=\"200\",uri=\"/api/ticket\"}[1m]))",
@@ -268,7 +268,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "exemplar": true,
             "expr": "sum(increase(http_server_requests_seconds_count{job=\"ticket-producer\",method=\"GET\",status!=\"200\",uri=\"/api/ticket\"}[1m]))",
@@ -285,7 +285,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "description": "",
         "fieldConfig": {
@@ -367,7 +367,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "exemplar": true,
             "expr": "sum(increase(http_server_requests_seconds_count{job=\"ticket-producer\",method=\"GET\",status=\"200\",uri=\"/api/ticket/{id}\"}[1m]))",
@@ -380,7 +380,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "exemplar": true,
             "expr": "sum(increase(http_server_requests_seconds_count{job=\"ticket-producer\",method=\"GET\",status!=\"200\",uri=\"/api/ticket/{id}\"}[1m]))",
@@ -396,7 +396,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "description": "",
         "fieldConfig": {
@@ -478,7 +478,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "expr": "sum(increase(http_server_requests_seconds_count{job=\"ticket-producer\",method=\"POST\",status=\"201\",uri=\"/api/ticket\"}[1m]))",
             "format": "time_series",
@@ -490,7 +490,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "exemplar": true,
             "expr": "sum(increase(http_server_requests_seconds_count{job=\"ticket-producer\",method=\"POST\",status!=\"201\",uri=\"/api/ticket\"}[1m]))",
@@ -506,7 +506,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "description": "",
         "fieldConfig": {
@@ -588,7 +588,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "exemplar": true,
             "expr": "sum(increase(http_server_requests_seconds_count{job=\"ticket-producer\",method=\"DELETE\",status=\"200\",uri=\"/api/ticket/{id}\"}[1m]))",
@@ -601,7 +601,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "exemplar": true,
             "expr": "sum(increase(http_server_requests_seconds_count{job=\"ticket-producer\",method=\"DELETE\",status!=\"200\",uri=\"/api/ticket/{id}\"}[1m]))",
@@ -617,7 +617,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "description": "",
         "fieldConfig": {
@@ -699,7 +699,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "expr": "sum(increase(http_server_requests_seconds_count{job=\"ticket-producer\",method=\"POST\",status=\"201\",uri=\"/api/ticket/ratelimited\"}[1m]))",
             "format": "time_series",
@@ -711,7 +711,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "exemplar": true,
             "expr": "sum(increase(http_server_requests_seconds_count{job=\"ticket-producer\",method=\"POST\",status!=\"201\",uri=\"/api/ticket/ratelimited\"}[1m]))",

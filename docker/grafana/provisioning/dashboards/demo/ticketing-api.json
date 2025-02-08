@@ -30,7 +30,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "webstore-metrics"
+        "uid": "ticketing-metrics"
       },
       "description": "",
       "fieldConfig": {
@@ -114,7 +114,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "webstore-metrics"
+            "uid": "ticketing-metrics"
           },
           "editorMode": "code",
           "exemplar": true,
@@ -126,7 +126,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "webstore-metrics"
+            "uid": "ticketing-metrics"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -139,7 +139,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "webstore-metrics"
+            "uid": "ticketing-metrics"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -152,7 +152,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "webstore-metrics"
+            "uid": "ticketing-metrics"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -169,7 +169,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "webstore-metrics"
+        "uid": "ticketing-metrics"
       },
       "fieldConfig": {
         "defaults": {
@@ -246,7 +246,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "webstore-metrics"
+            "uid": "ticketing-metrics"
           },
           "editorMode": "code",
           "exemplar": true,
@@ -262,7 +262,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "webstore-metrics"
+        "uid": "ticketing-metrics"
       },
       "fieldConfig": {
         "defaults": {
@@ -345,7 +345,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "webstore-metrics"
+            "uid": "ticketing-metrics"
           },
           "editorMode": "code",
           "expr": "sum by (span_name) (rate(traces_span_metrics_duration_milliseconds_count{service_name=~\"$application\"}[$__rate_interval]))",
@@ -369,7 +369,7 @@
       "dataFormat": "tsbuckets",
       "datasource": {
         "type": "prometheus",
-        "uid": "webstore-metrics"
+        "uid": "ticketing-metrics"
       },
       "fieldConfig": {
         "defaults": {
@@ -443,7 +443,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "webstore-metrics"
+            "uid": "ticketing-metrics"
           },
           "editorMode": "code",
           "exemplar": true,
@@ -487,7 +487,7 @@
         },
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "definition": "label_values(application)",
         "hide": 0,
@@ -515,7 +515,7 @@
         },
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "definition": "label_values(http_server_requests_seconds_count{application=\"$application\"}, uri)",
         "hide": 0,

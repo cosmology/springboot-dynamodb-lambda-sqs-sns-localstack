@@ -66,7 +66,7 @@ docker compose up --build
 ./scripts/run-traffic.sh
   ```
 ## Postman
-Import [collection](./TicketingSystemAPIs.postman_collection.json) into Postman
+Import [collection](./ticketing.postman_collection.json) into Postman
 
 ## Kibana
 http://localhost:5601

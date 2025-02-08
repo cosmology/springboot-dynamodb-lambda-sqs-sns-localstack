@@ -44,7 +44,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "fieldConfig": {
           "defaults": {
@@ -109,7 +109,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "exemplar": false,
@@ -125,7 +125,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "exemplar": false,
@@ -140,7 +140,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "exemplar": false,
@@ -154,7 +154,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "exemplar": false,
@@ -172,7 +172,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "fieldConfig": {
           "defaults": {
@@ -244,7 +244,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "exemplar": false,
@@ -263,7 +263,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "fieldConfig": {
           "defaults": {
@@ -331,7 +331,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "exemplar": false,
@@ -362,7 +362,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "description": "",
         "fieldConfig": {
@@ -500,7 +500,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "exemplar": false,
             "expr": "topk(7, sum(rate(traces_span_metrics_calls_total{service_name=~\"$service\", span_name=~\"$span_name\"}[$__range])) by (span_name,service_name)) ",
@@ -513,7 +513,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "exemplar": false,
             "expr": "topk(7, sum(rate(traces_span_metrics_calls_total{status_code=\"STATUS_CODE_ERROR\",service_name=~\"$service\", span_name=~\"$span_name\"}[$__range])) by (span_name,service_name))",
@@ -631,7 +631,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "fieldConfig": {
           "defaults": {
@@ -696,7 +696,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "exemplar": false,
@@ -712,7 +712,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "exemplar": false,
@@ -727,7 +727,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "exemplar": false,
@@ -741,7 +741,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "exemplar": false,
@@ -759,7 +759,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "fieldConfig": {
           "defaults": {
@@ -822,7 +822,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "exemplar": false,
@@ -840,7 +840,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "fieldConfig": {
           "defaults": {
@@ -928,7 +928,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "exemplar": true,
@@ -958,7 +958,7 @@
           },
           "datasource": {
             "type": "prometheus",
-            "uid": "webstore-metrics"
+            "uid": "ticketing-metrics"
           },
           "definition": "query_result(count by (service_name)(count_over_time(traces_span_metrics_calls_total[$__range])))",
           "includeAll": true,
@@ -982,7 +982,7 @@
           },
           "datasource": {
             "type": "prometheus",
-            "uid": "webstore-metrics"
+            "uid": "ticketing-metrics"
           },
           "definition": "query_result(sum ({__name__=~\".*traces_span_metrics_calls_total\",service_name=~\"$service\"})  by (span_name))",
           "includeAll": true,

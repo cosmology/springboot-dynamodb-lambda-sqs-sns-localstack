@@ -2,7 +2,7 @@ apiVersion: 1
 
 datasources:
   - name: Prometheus
-    uid: webstore-metrics
+    uid: ticketing-metrics
     type: prometheus
     url: http://prometheus:9090
     editable: true
@@ -35,14 +35,6 @@ datasources:
     basicAuth: false
     isDefault: false
     editable: true
-    jsonData:
-      exemplarTraceIdDestinations:
-        - datasourceUid: sport-consumer-traces
-          name: trace_id
-
-        - url: http://localhost:8080/jaeger/ui/trace/$${__value.raw}
-          name: trace_id
-          urlDisplayLabel: View in Jaeger UI
 
   - name: Prometheus-Movie-Consumer
     uid: movie-consumer-metrics
@@ -53,93 +45,3 @@ datasources:
     basicAuth: false
     isDefault: false
     editable: true
-  
-  # - name: Loki
-  #   type: loki
-  #   access: proxy
-  #   url: http://loki:3100
-  
-  # - name: gdev-testdata
-  #   isDefault: true
-  #   type: testdata
-  # - name: gdev-loki
-  #   type: loki
-  #   uid: gdev-loki
-  #   access: proxy
-  #   url: http://host.docker.internal:3100
-  # - name: gdev-tempo
-  #   type: tempo
-  #   uid: gdev-tempo
-  #   access: proxy
-  #   url: http://host.docker.internal:3200
-  #   editable: false
-  #   jsonData:
-  #     tracesToLogsV2:
-  #       datasourceUid: gdev-loki
-  #       spanStartTimeShift: '5m'
-  #       spanEndTimeShift: '-5m'
-  #       customQuery: true
-  #       query: '{filename="/var/log/grafana/grafana.log"} |="$${__span.traceId}"'
-  # - name: gdev-prometheus
-  #   uid: gdev-prometheus
-  #   type: prometheus
-  #   access: proxy
-  #   url: http://host.docker.internal:9090
-  #   basicAuth: true #username: admin, password: admin
-  #   basicAuthUser: admin
-  #   jsonData:
-  #     manageAlerts: true
-  #     alertmanagerUid: gdev-alertmanager
-  #     prometheusType: Prometheus #Cortex | Mimir | Prometheus | Thanos
-  #     prometheusVersion: 2.40.0
-  #     exemplarTraceIdDestinations:
-  #       - name: traceID
-  #         datasourceUid: gdev-tempo
-  #   secureJsonData:
-  #     basicAuthPassword: admin #https://grafana.com/docs/grafana/latest/administration/provisioning/#using-environment-variables
-  
-  # - name: Tempo
-  #   type: tempo
-  #   access: proxy
-  #   orgId: 1
-  #   url: http://tempo:3200
-  #   basicAuth: false
-  #   isDefault: true
-  #   version: 1
-  #   editable: false
-  #   apiVersion: 1
-  #   uid: tempo
-  #   jsonData:
-  #     httpMethod: GET
-  #     serviceMap:
-  #       datasourceUid: PBFA97CFB590B2093
-  #     tracesToLogsV2:
-  #       datasourceUid: loki
-  #       spanStartTimeShift: '-1h'
-  #       spanEndTimeShift: '1h'
-  #       filterByTraceID: true
-  #       filterBySpanID: true
-  #       tags: [ { key: 'service.name', value: 'job' } ]
-  # - name: Tempo
-  #   type: tempo
-  #   uid: tempo
-  #   url: http://tempo:3200
-  #   access: proxy
-  #   orgId: 1
-  #   basicAuth: false
-  #   isDefault: false
-  #   editable: true
-  #   apiVersion: 1
-  #   jsonData:
-  #     httpMethod: GET
-  #     serviceMap:
-  #       datasourceUid: PBFA97CFB590B2093
-  #     tracesToLogsV2:
-  #       # Field with an internal link pointing to a logs data source in Grafana.
-  #       # datasourceUid value must match the uid value of the logs data source.
-  #       datasourceUid: loki
-  #       spanStartTimeShift: '-1h'
-  #       spanEndTimeShift: '1h'
-  #       filterByTraceID: true
-  #       filterBySpanID: true
-  #       tags: [ { key: 'service.name', value: 'job' } ]

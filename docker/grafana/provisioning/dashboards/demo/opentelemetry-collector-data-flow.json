@@ -44,7 +44,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "description": "Otel Collector Instance",
         "fieldConfig": {
@@ -98,7 +98,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "expr": "count(count(otelcol_process_cpu_seconds_total{service_instance_id=~\".*\"}) by (service_instance_id))",
@@ -113,7 +113,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "description": "otelcol_process_cpu_seconds",
         "fieldConfig": {
@@ -166,7 +166,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "expr": "avg(rate(otelcol_process_cpu_seconds_total{}[$__rate_interval])*100) by (instance)",
@@ -181,7 +181,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "description": "Memory Rss\navg(otelcol_process_memory_rss{}) by (instance)",
         "fieldConfig": {
@@ -234,7 +234,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "expr": "avg(otelcol_process_memory_rss{}) by (instance)",
@@ -288,7 +288,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "description": "(avg(sum by(job) (rate(otelcol_exporter_sent_spans{}[$__range]))) / avg(sum by(job) (rate(otelcol_receiver_accepted_spans{}[$__range])))) ",
         "fieldConfig": {
@@ -358,7 +358,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "exemplar": false,
@@ -373,7 +373,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "expr": "avg(sum by(job) (rate(otelcol_receiver_accepted_spans_total{}[$__range])))",
@@ -386,7 +386,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "expr": "(avg(sum by(job) (rate(otelcol_exporter_sent_spans_total{}[$__range]))) / avg(sum by(job) (rate(otelcol_receiver_accepted_spans_total{}[$__range])))) ",
@@ -402,7 +402,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "fieldConfig": {
           "defaults": {},
@@ -426,7 +426,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "exemplar": false,
@@ -440,7 +440,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "exemplar": false,
@@ -459,7 +459,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "description": "Spans Accepted by Receiver and Transport",
         "fieldConfig": {
@@ -511,7 +511,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "expr": "sum(rate(otelcol_receiver_accepted_spans_total{}[$__rate_interval])) by (receiver,transport)",
@@ -526,7 +526,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "description": "Total Spans Accepted ",
         "fieldConfig": {
@@ -574,7 +574,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "expr": "sum(rate(otelcol_receiver_accepted_spans_total{}[$__rate_interval])) ",
@@ -589,7 +589,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "description": "Total Batch Processed",
         "fieldConfig": {
@@ -645,7 +645,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "expr": "sum(rate(otelcol_processor_batch_batch_send_size_sum{}[$__rate_interval]))  by (processor)",
@@ -660,7 +660,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "fieldConfig": {
           "defaults": {
@@ -707,7 +707,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "exemplar": false,
@@ -725,7 +725,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "description": "Sent by Exporter",
         "fieldConfig": {
@@ -776,7 +776,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "exemplar": false,
@@ -794,7 +794,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "fieldConfig": {
           "defaults": {
@@ -845,7 +845,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "expr": "sum(rate(otelcol_receiver_refused_spans_total{}[$__rate_interval])) by (receiver,transport)",
@@ -860,7 +860,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "description": "Total Spans Accepted ",
         "fieldConfig": {
@@ -908,7 +908,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "expr": "sum(rate(otelcol_receiver_refused_spans_total{}[$__rate_interval])) ",
@@ -923,7 +923,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "description": "otelcol_exporter_send_failed_spans",
         "fieldConfig": {
@@ -971,7 +971,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "exemplar": false,
@@ -989,7 +989,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "description": "Sent by Exporter\notelcol_exporter_send_failed_spans",
         "fieldConfig": {
@@ -1040,7 +1040,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "exemplar": false,
@@ -1071,7 +1071,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "description": "avg(sum by(job) (rate(otelcol_exporter_sent_metric_points{}[$__range]))) versus avg(sum by(job) (rate(otelcol_receiver_accepted_metric_points{}[$__range])))",
         "fieldConfig": {
@@ -1141,7 +1141,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "exemplar": false,
@@ -1156,7 +1156,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "expr": "avg(sum by(job) (rate(otelcol_receiver_accepted_metric_points_total{}[$__range])))",
@@ -1169,7 +1169,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "expr": "( avg(sum by(job) (rate(otelcol_exporter_sent_metric_points_total{}[$__range]))) /avg(sum by(job) (rate(otelcol_receiver_accepted_metric_points_total{}[$__range]))))",
@@ -1221,7 +1221,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "description": "Metrics Signalling Pipelines",
         "fieldConfig": {
@@ -1246,7 +1246,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "exemplar": false,
@@ -1260,7 +1260,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "exemplar": false,
@@ -1279,7 +1279,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "description": "otelcol_receiver_accepted_metric_points",
         "fieldConfig": {
@@ -1331,7 +1331,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "expr": "sum(rate(otelcol_receiver_accepted_metric_points_total{}[$__rate_interval])) by (receiver,transport)",
@@ -1346,7 +1346,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "description": "otelcol_receiver_accepted_metric_points\nTotal Accepted ",
         "fieldConfig": {
@@ -1394,7 +1394,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "expr": "sum(rate(otelcol_receiver_accepted_metric_points_total{}[$__rate_interval])) ",
@@ -1409,7 +1409,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "fieldConfig": {
           "defaults": {
@@ -1464,7 +1464,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "expr": "sum(rate(otelcol_processor_batch_batch_send_size_sum{}[$__rate_interval]))  by (processor)",
@@ -1479,7 +1479,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "description": "Total Export ",
         "fieldConfig": {
@@ -1527,7 +1527,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "exemplar": false,
@@ -1545,7 +1545,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "description": "Sent by Exporter",
         "fieldConfig": {
@@ -1596,7 +1596,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "exemplar": false,
@@ -1614,7 +1614,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "fieldConfig": {
           "defaults": {
@@ -1665,7 +1665,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "expr": "sum(rate(otelcol_receiver_refused_metric_points_total{}[$__rate_interval])) by (receiver,transport)",
@@ -1680,7 +1680,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "description": "Total Refused \nsum(rate(otelcol_receiver_refused_metric_points{}[$__rate_interval])) ",
         "fieldConfig": {
@@ -1728,7 +1728,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "expr": "sum(rate(otelcol_receiver_refused_metric_points_total{}[$__rate_interval])) ",
@@ -1743,7 +1743,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "description": "Total Failed Export ",
         "fieldConfig": {
@@ -1791,7 +1791,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "exemplar": false,
@@ -1809,7 +1809,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "description": "Sent by Exporter\notelcol_exporter_send_failed_metric_points",
         "fieldConfig": {
@@ -1860,7 +1860,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "exemplar": false,
@@ -1891,7 +1891,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "description": "otelcol prometheus exporter 8888 export rate versus prometheus scrape metrics",
         "fieldConfig": {
@@ -1961,7 +1961,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "exemplar": false,
@@ -1975,7 +1975,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "expr": "(sum(rate(otelcol_exporter_sent_metric_points_total{exporter=\"prometheus\"}[$__rate_interval])) )",
@@ -2024,7 +2024,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "description": "sum_over_time(scrape_samples_scraped[$__range])/ count_over_time(scrape_samples_scraped[$__range])",
         "fieldConfig": {
@@ -2078,7 +2078,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "exemplar": false,
@@ -2096,7 +2096,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "description": "scrape_samples_scraped{job!=\"\"}\nTotal Samples Scraped",
         "fieldConfig": {
@@ -2148,7 +2148,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "exemplar": false,
@@ -2182,7 +2182,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "webstore-metrics"
+          "uid": "ticketing-metrics"
         },
         "fieldConfig": {
           "defaults": {},
@@ -2204,7 +2204,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "exemplar": false,
@@ -2219,7 +2219,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "webstore-metrics"
+              "uid": "ticketing-metrics"
             },
             "editorMode": "code",
             "exemplar": false,
@@ -2288,7 +2288,7 @@
           },
           "datasource": {
             "type": "prometheus",
-            "uid": "webstore-metrics"
+            "uid": "ticketing-metrics"
           },
           "definition": "query_result(sum(otelcol_process_uptime{}) by (service_version))\n",
           "hide": 2,
