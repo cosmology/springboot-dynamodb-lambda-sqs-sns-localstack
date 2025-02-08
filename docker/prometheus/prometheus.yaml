@@ -1,0 +1,59 @@
+global:
+  scrape_interval: 5s
+  scrape_timeout: 3s
+  evaluation_interval: 5s
+
+storage:
+  tsdb:
+    out_of_order_time_window: 30m
+
+scrape_configs:
+
+  - job_name: 'ticket-producer'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['host.docker.internal:9080']
+        labels:
+          application: ticket-producer
+
+  - job_name: 'sport-consumer'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['host.docker.internal:9081']
+        labels:
+          application: sport-ticket-consumer # spring app name not container name
+  
+  - job_name: 'movie-consumer'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['host.docker.internal:9082']
+        labels:
+          application: movie-ticket-consumer # spring app name not container name
+
+# global:
+#   scrape_interval: 15s
+
+# scrape_configs:
+#   - job_name: 'my_application'
+#     metrics_path: '/actuator/prometheus'
+#     static_configs:
+#       - targets:
+#           - 'ticket-producer:9080'  # Default target
+#           - 'sport-consumer:9081'  # Another target with default URL
+#           - 'movie-consumer:9082'  # A different target with a different URL
+#     relabel_configs:
+#       # First target
+#       - source_labels: [__address__]
+#         target_label: __address__
+#         replacement: 'host.docker.internal:9080'  # Scrape URL for localhost
+#         regex: 'host.docker.internal:.*'
+#       # Second target
+#       - source_labels: [__address__]
+#         target_label: __address__
+#         replacement: 'sport-consumer:9081'  # Scrape URL for example.com
+#         regex: 'sport-consumer:.*'
+#       # Third target
+#       - source_labels: [__address__]
+#         target_label: __address__
+#         replacement: 'movie-consumer:9082'  # Scrape URL for localhost:3000
+#         regex: 'movie-consumer:.*'

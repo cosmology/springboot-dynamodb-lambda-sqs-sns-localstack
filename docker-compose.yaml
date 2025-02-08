@@ -1,3 +1,10 @@
+x-default-logging: &logging
+  driver: "json-file"
+  options:
+    max-size: "5m"
+    max-file: "2"
+    tag: "{{.Name}}"
+
 networks:
   ls_network:
     ipam:
@@ -6,6 +13,9 @@ networks:
 
 services:
 
+  # ***************************
+  # AWS Cloud Services Emulator
+  # ***************************
   localstack:
     container_name: "${LOCALSTACK_DOCKER_NAME:-localstack-main}"
     image: localstack/localstack:latest
@@ -13,40 +23,61 @@ services:
       - "127.0.0.1:4510-4559:4510-4559"
       - "127.0.0.1:4566:4566"
     environment:
-      - AWS_DEFAULT_REGION=${AWS_REGION:-us-west-1}
+      - AWS_DEFAULT_REGION=${AWS_REGION:-us-east-1}
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
       - SERVICES=${SERVICES}
       - DEBUG=${DEBUG:-0}
+      - OTEL_COLLECTOR_HOST=${OTEL_COLLECTOR_HOST}
+      - OTEL_COLLECTOR_PORT_HTTP=${OTEL_COLLECTOR_PORT_HTTP}
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317
+      - OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
+      - OTEL_RESOURCE_ATTRIBUTES=${OTEL_RESOURCE_ATTRIBUTES}
+      - OTEL_LOGS_EXPORTER=otlp
     volumes:
-      - "$PWD/tmp/localstack:/var/lib/localstack"
       - "$PWD/dynamodb-lambda-function/shared:/shared"
-      - "$PWD/dynamodb-lambda-function/src/test/resources/localstack/local-aws-infrastructure.sh:/etc/localstack/init/ready.d/init-aws.sh"
+      - "$PWD/scripts/localstack/local-aws-infrastructure.sh:/etc/localstack/init/ready.d/init-aws.sh"
+      - "$PWD/tmp/localstack:/var/lib/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
     networks:
       ls_network:
         ipv4_address: 10.0.2.20
-  
-  producer:
+
+  # ******************
+  # Core Demo Services
+  # ******************
+
+  # Ticket Producer Service
+  ticket-producer:
     platform: linux/amd64
     container_name: ticket-producer
+    hostname: ticket-producer
     build:
       context: ./ticket-producer
       dockerfile: Dockerfile
     environment:
+      - TICKET_PRODUCER_RATE_LIMIT=${TICKET_PRODUCER_RATE_LIMIT}
+      - TICKET_PRODUCER_RATE_DURATIONINMS=${TICKET_PRODUCER_RATE_DURATIONINMS}
       - AWS_REGION=${AWS_REGION}
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://${OTEL_COLLECTOR_HOST}:${OTEL_COLLECTOR_PORT_HTTP}
+      - OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
+      - OTEL_RESOURCE_ATTRIBUTES=${OTEL_RESOURCE_ATTRIBUTES}
+      - OTEL_LOGS_EXPORTER=otlp
+      - OTEL_SERVICE_NAME=ticket-producer
+      - OTEL_TRACES_EXPORTER=jaeger
+      - OTEL_EXPORTER_JAEGER_ENDPOINT=http://jaeger:${OTEL_COLLECTOR_PORT_GRPC}
     depends_on:
-      localstack:
-        condition: service_healthy
+      otel-collector:
+        condition: service_started
     ports:
-      - 9080:9080
+      - ${TICKET_PRODUCER_PORT}:${TICKET_PRODUCER_PORT}
     healthcheck:
       test:
         [
           "CMD-SHELL",
-          "curl --fail --silent localhost:9080/actuator/health | jq -e '.status == \"UP\"' > /dev/null || exit 1"
+          "curl --fail --silent localhost:${TICKET_PRODUCER_PORT}/actuator/health | jq -e '.status == \"UP\"' > /dev/null || exit 1"
         ]
       interval: 5s
       timeout: 5s
@@ -56,7 +87,9 @@ services:
       - 10.0.2.20
     networks:
       - ls_network
-  
+    logging: *logging
+
+  # Sport Ticket Consumer Service
   sport-consumer:
     platform: linux/amd64
     container_name: sport-consumer
@@ -68,16 +101,35 @@ services:
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
       - TICKET_PRODUCER_URL=${TICKET_PRODUCER_URL}
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://${OTEL_COLLECTOR_HOST}:${OTEL_COLLECTOR_PORT_HTTP}
+      - OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
+      - OTEL_RESOURCE_ATTRIBUTES=${OTEL_RESOURCE_ATTRIBUTES}
+      - OTEL_LOGS_EXPORTER=otlp
+      - OTEL_SERVICE_NAME=sport-consumer
+      - OTEL_TRACES_EXPORTER=jaeger
+      - OTEL_EXPORTER_JAEGER_ENDPOINT=http://jaeger:${OTEL_COLLECTOR_PORT_GRPC}
     depends_on:
-      producer:
+      ticket-producer:
         condition: service_healthy
     ports:
-      - 9081:9081
+      - ${SPORT_CONSUMER_PORT}:${SPORT_CONSUMER_PORT}
+    healthcheck:
+        test:
+          [
+            "CMD-SHELL",
+            "curl --fail --silent localhost:9081/actuator/health | jq -e '.status == \"UP\"' > /dev/null || exit 1"
+          ]
+        interval: 5s
+        timeout: 5s
+        retries: 3
+        start_period: 5s
     dns:
       - 10.0.2.20
     networks:
       - ls_network
-  
+    logging: *logging
+
+  # Movie Ticket Consumer Service
   movie-consumer:
     platform: linux/amd64
     container_name: movie-consumer
@@ -89,17 +141,171 @@ services:
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
       - TICKET_PRODUCER_URL=${TICKET_PRODUCER_URL}
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://${OTEL_COLLECTOR_HOST}:${OTEL_COLLECTOR_PORT_HTTP}
+      - OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
+      - OTEL_RESOURCE_ATTRIBUTES=${OTEL_RESOURCE_ATTRIBUTES}
+      - OTEL_LOGS_EXPORTER=otlp
+      - OTEL_SERVICE_NAME=movie-consumer
+      - OTEL_TRACES_EXPORTER=jaeger
+      - OTEL_EXPORTER_JAEGER_ENDPOINT=http://jaeger:${OTEL_COLLECTOR_PORT_GRPC}
     depends_on:
-      producer:
+      ticket-producer:
         condition: service_healthy
     ports:
-      - 9082:9082
+      - ${MOVIE_CONSUMER_PORT}:${MOVIE_CONSUMER_PORT}
+    dns:
+      - 10.0.2.20
+    networks:
+      - ls_network
+    logging: *logging
+
+  # ********************
+  # Telemetry Components
+  # ********************
+
+  # OpenTelemetry Collector
+  otel-collector:
+    image: ${COLLECTOR_CONTRIB_IMAGE}
+    container_name: otel-collector
+    restart: always
+    command:
+      - --config=/etc/otelcol-contrib/otel-collector.yaml
+    volumes:
+      - ${HOST_FILESYSTEM}:/hostfs:ro
+      - ${DOCKER_SOCK}:/var/run/docker.sock:ro
+      - ${OTEL_COLLECTOR_CONFIG}:/etc/otelcol-contrib/otel-collector.yaml
+    ports:
+      # - "1888:1888"                 # pprof extension
+      # - "8888:8888"                 # Prometheus metrics exposed by the collector
+      # - "8889:8889"                 # Prometheus exporter metrics
+      - "13133:13133"                 # health_check extension
+      # - "55679:55679"               # zpages extension
+      - "${OTEL_COLLECTOR_PORT_GRPC}" # OTLP gRPC receiver
+      - "${OTEL_COLLECTOR_PORT_HTTP}" # OTLP http receiver
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:13133"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    depends_on:
+    #   # es01:
+    #   #   condition: service_healthy
+    #   # es02:
+    #   #   condition: service_healthy
+    #   # es03:
+    #   #   condition: service_healthy
+      jaeger:
+        condition: service_healthy
+    dns:
+      - 10.0.2.20
+    networks:
+      - ls_network
+    logging: *logging
+
+  # Jaeger
+  jaeger:
+    image: ${JAEGERTRACING_IMAGE}
+    container_name: jaeger
+    command:
+      - "--memory.max-traces=25000"
+      - "--query.base-path=/jaeger/ui"
+      - "--prometheus.server-url=http://${PROMETHEUS_ADDR}"
+      - "--prometheus.query.normalize-calls=true"
+      - "--prometheus.query.normalize-duration=true"
+    deploy:
+      resources:
+        limits:
+          memory: 1200M
+    restart: unless-stopped
+    ports:
+      - "${JAEGER_SERVICE_PORT}:${JAEGER_SERVICE_PORT}"         # Jaeger UI
+      - ${OTEL_COLLECTOR_PORT_GRPC}
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:16686"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+      - METRICS_STORAGE_TYPE=prometheus
+    dns:
+      - 10.0.2.20
+    networks:
+      - ls_network
+    logging: *logging
+
+  # Prometheus
+  prometheus:
+    image: ${PROMETHEUS_IMAGE}
+    container_name: prometheus
+    # extra_hosts: ['host.docker.internal:host-gateway']
+    command:
+      - --web.console.templates=/etc/prometheus/consoles
+      - --web.console.libraries=/etc/prometheus/console_libraries
+      - --storage.tsdb.retention.time=1h
+      - --storage.tsdb.path=/prometheus
+      - --web.enable-lifecycle
+      - --web.enable-remote-write-receiver
+      - --web.route-prefix=/
+      - --enable-feature=exemplar-storage
+      - --enable-feature=otlp-write-receiver
+      - --config.file=/etc/prometheus/prometheus-config.yaml
+    volumes:
+      - ${PROMETHEUS_CONFIG}:/etc/prometheus/prometheus-config.yaml
+    deploy:
+      resources:
+        limits:
+          memory: 300M
+    restart: always
+    ports:
+      - "${PROMETHEUS_SERVICE_PORT}:${PROMETHEUS_SERVICE_PORT}"
+    healthcheck:
+      test:
+        ["CMD-SHELL","nc -z localhost ${PROMETHEUS_SERVICE_PORT}"]
     dns:
       - 10.0.2.20
     networks:
       - ls_network
 
+  # Grafane
+  grafana:
+    image: ${GRAFANA_IMAGE}
+    container_name: grafana
+    deploy:
+      resources:
+        limits:
+          memory: 100M
+    restart: unless-stopped
+    ports:
+      - 3000:3000/tcp
+    environment:
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_BASIC_ENABLED=false
+      - GF_FEATURE_TOGGLES_ENABLE=accessControlOnCall lokiLogsDataplane exploreLogsShardSplitting
+      - GF_INSTALL_PLUGINS=https://storage.googleapis.com/integration-artifacts/grafana-lokiexplore-app/grafana-lokiexplore-app-latest.zip;grafana-lokiexplore-app
+    volumes:
+      - ./docker/grafana/grafana.ini:/etc/grafana/grafana.ini
+      - ./docker/grafana/provisioning/:/etc/grafana/provisioning/
+    depends_on:
+      prometheus:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z localhost 3000"]
+    dns:
+      - 10.0.2.20
+    networks:
+      - ls_network
+    logging: *logging
+
+  # *********************
+  # ELK Stack
+  # *********************
+
+  # Elasticsearch Cluster
   setup:
+    container_name: setup
     image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
     volumes:
       - certs:/usr/share/elasticsearch/config/certs
@@ -160,7 +366,7 @@ services:
       timeout: 5s
       retries: 120
     depends_on:
-      producer:
+      localstack:
         condition: service_healthy
 
   es01:
@@ -295,11 +501,7 @@ services:
   logstash:
     container_name: logstash
     depends_on:
-      es01:
-        condition: service_healthy
-      es02:
-        condition: service_healthy
-      es03:
+      kibana:
         condition: service_healthy
     image: docker.elastic.co/logstash/logstash:${STACK_VERSION}
     restart: unless-stopped
@@ -308,7 +510,8 @@ services:
     volumes:
       - certs:/usr/share/logstash/certs
       - logstashdata01:/usr/share/logstash/data
-      - ./logstash/pipeline:/usr/share/logstash/pipeline/
+      - logstash:/logstash
+      - ./docker/logstash/pipeline:/usr/share/logstash/pipeline/
     environment:
       - xpack.monitoring.enabled=false
       - ELASTIC_USER=elastic
@@ -357,8 +560,8 @@ services:
       - XPACK_SECURITY_ENCRYPTIONKEY=${ENCRYPTION_KEY}
       - XPACK_ENCRYPTEDSAVEDOBJECTS_ENCRYPTIONKEY=${ENCRYPTION_KEY}
       - XPACK_REPORTING_ENCRYPTIONKEY=${ENCRYPTION_KEY}
-      # - xpack.reporting.roles.enabled=false
-      # - xpack.security.http.ssl.enabled=false
+      - xpack.reporting.roles.enabled=false
+      - xpack.security.http.ssl.enabled=false
     mem_limit: ${MEM_LIMIT}
     healthcheck:
       test:
@@ -381,7 +584,9 @@ services:
         condition: service_healthy
       logstash:
         condition: service_healthy
-    build: filebeat
+    build:
+      context: ./docker/filebeat
+      dockerfile: Dockerfile
     restart: unless-stopped
     user: root
     volumes:
@@ -392,39 +597,45 @@ services:
       - ELASTIC_USER=elastic
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
       - ELASTIC_HOSTS=https://es01:9200
-  
-  prometheus:
-    image: prom/prometheus:v2.55.1
-    container_name: prometheus
-    restart: unless-stopped
-    volumes:
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-    ports:
-      - "9090:9090"
-    depends_on:
-      producer:
-        condition: service_healthy
-    healthcheck:
-      test:
-        ["CMD-SHELL","nc -z localhost 9090"]
 
-  grafana:
-    image: grafana/grafana:latest
-    container_name: grafana
-    restart: unless-stopped
-    ports:
-      - "3000:3000"
-    environment:
-      - GF_AUTH_ANONYMOUS_ENABLED=true
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=admin
-    volumes:
-      - ./grafana/provisioning:/etc/grafana/provisioning
-    depends_on:
-      prometheus:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD-SHELL", "nc -z localhost 3000"]
+  # Log and trace aggregation and searching
+  # loki:
+  #   image: grafana/loki:main-e9b6ce9
+  #   container_name: loki
+  #   volumes:
+  #     - ./docker/loki/loki-config.yaml:/etc/loki/loki-config.yaml
+  #   command: -config.file=/etc/loki/loki-config.yaml
+  #   ports:
+  #     - "3100:3100"
+
+  # tempo:
+  #   image: grafana/tempo:latest
+  #   container_name: tempo
+  #   hostname: tempo
+  #   command: [ "-config.file=/etc/tempo.yaml" ]
+  #   volumes:
+  #     - ./docker/tempo/tempo.yaml:/etc/tempo.yaml
+  #   ports:
+  #     - "3200:3200"   # tempo
+  #     - "4317"        # otlp grpc
+  #   healthcheck:
+  #     interval: 5s
+  #     retries: 10
+  #     test: wget --no-verbose --tries=1 --spider http://localhost:3200/status || exit 1
+
+  # zipkin-all-in-one:
+  #   image: openzipkin/zipkin:latest
+  #   container_name: zipkin-all-in-one
+  #   hostname: zipkin-all-in-one
+  #   restart: always
+  #   # Environment settings are defined here https://github.com/openzipkin/zipkin/blob/master/zipkin-server/README.md#environment-variables
+  #   environment:
+  #     - JAVA_OPTS=-Xms1024m -Xmx1024m -XX:+ExitOnOutOfMemoryError
+  #   ports:
+  #     # Port used for the Zipkin UI and HTTP Api
+  #     - 9411:9411
+  #   # Uncomment to enable debug logging
+  #   command: --logging.level.zipkin2=DEBUG
 
 volumes:
   certs:
@@ -437,5 +648,11 @@ volumes:
     driver: local
   kibanadata:
     driver: local
+  logstash:
+    driver: local
   logstashdata01:
+    driver: local
+  prometheus:
+    driver: local
+  tempodata:
     driver: local
