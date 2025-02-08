@@ -14,14 +14,12 @@ import org.springframework.validation.annotation.Validated;
 @ConfigurationProperties(prefix = "aws")
 public class AwsProperties {
 
-    @NotNull
-    private SNS sns;
+  @NotNull private SNS sns;
 
-    @Data
-    @Valid
-    public static class SNS {
+  @Data
+  @Valid
+  public static class SNS {
 
-        @NotBlank
-        private String destination;
-    }
+    @NotBlank private String destination;
+  }
 }

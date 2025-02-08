@@ -11,6 +11,7 @@
                             {
                             "trace": "%X{traceId:-}",
                             "span": "%X{spanId:-}",
+                            "correlationId": "%X{correlationId:-}",
                             "parent": "%X{parentId:-}",
                             "exportable": "%X{sampled:-}",
                             "pid": "${PID:-}"

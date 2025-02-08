@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class TicketController {
 
-    private final TicketProducerClient ticketProducerClient;
+  private final TicketProducerClient ticketProducerClient;
 
-    @GetMapping(value = {"/", "/ticket"})
-    public String getTicket(Model model) {
-        model.addAttribute("ticketList", ticketProducerClient.getTicket());
-        return "ticket";
-    }
+  @GetMapping(value = {"/", "/ticket"})
+  public String getTicket(Model model) {
+    model.addAttribute("ticketList", ticketProducerClient.getTicket());
+    return "ticket";
+  }
 }
