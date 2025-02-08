@@ -33,7 +33,6 @@ public class TicketController {
   @PostMapping
   public Ticket createTicket(@Valid @RequestBody CreateTicketRequest request) {
     log.info("createTicket request {}", request);
-    // TODO: get context and propagate to dynamodb
     return ticketService.saveTicket(new Ticket(request.getTitle(), request.getEventType()));
   }
 

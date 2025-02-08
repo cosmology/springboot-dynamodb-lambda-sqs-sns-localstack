@@ -1,6 +1,7 @@
 package com.ivanprokic.dynamodblambdafunction.config;
 
 import io.opentelemetry.api.OpenTelemetry;
+import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.context.propagation.ContextPropagators;
 import io.opentelemetry.exporter.otlp.logs.OtlpGrpcLogRecordExporter;
@@ -13,7 +14,6 @@ import io.opentelemetry.sdk.logs.SdkLoggerProviderBuilder;
 import io.opentelemetry.sdk.logs.export.BatchLogRecordProcessor;
 import io.opentelemetry.sdk.resources.Resource;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
-import io.opentelemetry.semconv.ResourceAttributes;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,9 +40,10 @@ public class OpenTelemetryConfig {
   @Bean
   SdkLoggerProvider otelSdkLoggerProvider(
       Environment environment, ObjectProvider<LogRecordProcessor> logRecordProcessors) {
-    String applicationName = environment.getProperty("spring.application.name", "application");
     Resource springResource =
-        Resource.create(Attributes.of(ResourceAttributes.SERVICE_NAME, applicationName));
+        Resource.create(
+            Attributes.of(
+                AttributeKey.stringKey("spring.application.name"), "dynamodb-lambda-function"));
     SdkLoggerProviderBuilder builder =
         SdkLoggerProvider.builder().setResource(Resource.getDefault().merge(springResource));
     logRecordProcessors.orderedStream().forEach(builder::addLogRecordProcessor);
@@ -51,8 +52,6 @@ public class OpenTelemetryConfig {
 
   @Bean
   LogRecordProcessor otelLogRecordProcessor(Environment environment) {
-    // String otelExporterOtplEndpoint = environment.getProperty("otel.exporter.otpl.endpoint",
-    // "http://otel-collector:4317");
     return BatchLogRecordProcessor.builder(
             OtlpGrpcLogRecordExporter.builder().setEndpoint("http://otel-collector:4317").build())
         .build();

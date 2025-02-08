@@ -18,7 +18,6 @@ public class LogObservationHandler implements ObservationHandler<Observation.Con
   @Override
   public void onStart(Observation.Context context) {
     log.info("LogObservationHandler::onStart: context {}", context);
-    // updateMDC();
   }
 
   @Override
@@ -30,9 +29,4 @@ public class LogObservationHandler implements ObservationHandler<Observation.Con
   public boolean supportsContext(Observation.Context context) {
     return true;
   }
-
-  // private static void updateMDC() {
-  //     MDC.put("traceId", Span.current().getSpanContext().getTraceId());
-  //     MDC.put("spanId", Span.current().getSpanContext().getSpanId());
-  // }
 }
