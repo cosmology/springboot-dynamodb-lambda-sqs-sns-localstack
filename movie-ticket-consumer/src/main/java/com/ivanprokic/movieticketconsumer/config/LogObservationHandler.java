@@ -5,12 +5,13 @@ import io.micrometer.observation.ObservationHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.ServerHttpObservationFilter;
 
 @Component
 @AutoConfiguration(after = ServerHttpObservationFilter.class)
-// @Order(999)
+@Order(999)
 public class LogObservationHandler implements ObservationHandler<Observation.Context> {
 
   private static final Logger log = LoggerFactory.getLogger(LogObservationHandler.class);

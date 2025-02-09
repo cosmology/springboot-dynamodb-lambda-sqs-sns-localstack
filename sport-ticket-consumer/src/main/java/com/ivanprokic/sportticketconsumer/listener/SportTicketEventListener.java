@@ -29,8 +29,6 @@ public class SportTicketEventListener {
 
   private final SimpMessagingTemplate simpMessagingTemplate;
 
-  // @SqsListener(value = "sport-consumer-queue",  pollTimeoutSeconds = "20",
-  // messageVisibilitySeconds="60", maxMessagesPerPoll = "10")
   @SqsListener("${aws.sqs.destination}")
   @Observed(
       name = "sport-ticket-consumer:sqsListener",

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/v1/sport")
-public class SportController {
+public class SportTicketController {
 
   SportService sportService;
 
