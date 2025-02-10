@@ -5,12 +5,13 @@ import io.micrometer.observation.ObservationHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.ServerHttpObservationFilter;
 
 @Component
 @AutoConfiguration(after = ServerHttpObservationFilter.class)
-// @Order(999)
+@Order(999)
 public class LogObservationHandler implements ObservationHandler<Observation.Context> {
 
   private static final Logger log = LoggerFactory.getLogger(LogObservationHandler.class);
@@ -18,7 +19,6 @@ public class LogObservationHandler implements ObservationHandler<Observation.Con
   @Override
   public void onStart(Observation.Context context) {
     log.info("LogObservationHandler::onStart: context {}", context);
-    // updateMDC();
   }
 
   @Override
@@ -30,9 +30,4 @@ public class LogObservationHandler implements ObservationHandler<Observation.Con
   public boolean supportsContext(Observation.Context context) {
     return true;
   }
-
-  // private static void updateMDC() {
-  //     MDC.put("traceId", Span.current().getSpanContext().getTraceId());
-  //     MDC.put("spanId", Span.current().getSpanContext().getSpanId());
-  // }
 }
